@@ -1,0 +1,26 @@
+{
+  "name": "widi/filter-specification",
+  "description": "Specification pattern for filtering objects in php.",
+  "authors": [
+    {
+      "name": "Dirk Winkhaus",
+      "email": "dirkwinkhaus@googlemail.com"
+    }
+  ],
+  "license": "LGPL-3.0",
+  "require": {
+    "php" : "^7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Widi\\Filter\\Specification\\": [
+        "src/",
+        "test/Integration",
+        "test/Unit"
+      ]
+    }
+  }
+}
