@@ -22,6 +22,16 @@ class CompositeSpecification implements CompositeSpecificationInterface
     private $specification;
 
     /**
+     * CompositeSpecification constructor.
+     * 
+     * @param SpecificationInterface|null $specification
+     */
+    public function __construct(SpecificationInterface $specification = null)
+    {
+        $this->specification = $specification;
+    }
+
+    /**
      * @param CandidateInterface $candidate
      *
      * @return bool

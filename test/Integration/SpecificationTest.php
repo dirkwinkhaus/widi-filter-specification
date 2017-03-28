@@ -27,8 +27,9 @@ class SpecificationTest extends TestCase
         $candidate = $this->prophesize(MySpecification::class);
         $candidate->getValue()->willReturn($value);
 
-        $compositeSpecification = new CompositeSpecification();
-        $compositeSpecification->and(new CandidateIsHigherThanFiveCompositeSpecification());
+        $compositeSpecification = new CompositeSpecification(
+            new CandidateIsHigherThanFiveCompositeSpecification()
+        );
         $compositeSpecification->and(new CandidateIsLowerThanTwentyCompositeSpecification());
         $compositeSpecification->or(new CandidateIsDivisableByFive());
 
