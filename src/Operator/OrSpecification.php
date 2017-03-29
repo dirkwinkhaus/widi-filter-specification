@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Widi\Filter\Specification\Operator;
 
 use Widi\Filter\Specification\CandidateInterface;

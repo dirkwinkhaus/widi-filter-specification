@@ -2,7 +2,6 @@
 
 namespace Widi\Filter\Specification;
 
-
 use PHPUnit\Framework\TestCase;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsDivisableByFive;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanFiveCompositeSpecification;

@@ -2,7 +2,6 @@
 
 namespace Widi\Filter\Specification;
 
-
 /**
  * Class AbstractCompositeSpecification
  * @package Widi\Filter\Specification
