@@ -21,7 +21,7 @@ class SpecificationTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider getData
+     * @dataProvider getDataForOneComposite
      */
     public function itShouldFilterByOneComposite($value, $expectedResult)
     {
@@ -40,13 +40,11 @@ class SpecificationTest extends TestCase
 
     /**
      * @test
-     *
+     * @dataProvider getDataForTwoComposites
      */
-//@dataProvider getDataForTwoComposites
-    //public function itShouldFilterByTwoComposites($value, $expectedResult)
-    public function itShouldFilterByTwoComposites()
+
+    public function itShouldFilterByTwoComposites($value, $expectedResult)
     {
-        $value = 30;
         $candidate = $this->prophesize(MySpecification::class);
         $candidate->getValue()->willReturn($value);
 
@@ -61,13 +59,10 @@ class SpecificationTest extends TestCase
 
 
         $compositeSpecification = new CompositeSpecification();
-        $compositeSpecification->or($compositeSpecificationFirstComposite->group());
-        $compositeSpecification->or($compositeSpecificationSecondComposite->group());
+        $compositeSpecification->or($compositeSpecificationFirstComposite);
+        $compositeSpecification->or($compositeSpecificationSecondComposite);
 
         $result = $compositeSpecification->meetsSpecification($candidate->reveal());
-
-        var_dump($result);
-        die();
 
         $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
     }
@@ -75,7 +70,7 @@ class SpecificationTest extends TestCase
     /**
      * @return array
      */
-    public function getData()
+    public function getDataForOneComposite()
     {
         return [
             [0, true],
@@ -117,38 +112,20 @@ class SpecificationTest extends TestCase
      */
     public function getDataForTwoComposites()
     {
-        return [
-            [0, true],
-            [1, false],
-            [2, false],
-            [3, false],
-            [4, false],
-            [5, true],
-            [6, true],
-            [7, true],
-            [8, true],
-            [9, true],
-            [10, true],
-            [11, true],
-            [12, true],
-            [13, true],
-            [14, true],
-            [15, true],
-            [16, true],
-            [17, true],
-            [18, true],
-            [19, true],
-            [20, true],
-            [21, false],
-            [22, false],
-            [23, false],
-            [24, false],
-            [25, true],
-            [26, false],
-            [27, false],
-            [28, false],
-            [29, false],
-            [30, true],
-        ];
+        return array_merge(
+            $this->getDataForOneComposite(),
+            [
+                [101, true],
+                [99, false],
+                [201, false],
+                [98, false],
+                [77, false],
+                [102, true],
+                [188, true],
+                [155, true],
+                [233, false],
+                [500, true],
+            ]
+        );
     }
 }

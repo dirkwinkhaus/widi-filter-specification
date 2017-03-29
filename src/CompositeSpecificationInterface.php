@@ -44,10 +44,4 @@ interface CompositeSpecificationInterface extends SpecificationInterface
      * @return CompositeSpecificationInterface
      */
     public function xor(SpecificationInterface $specification);
-
-    /**
-     * @return SpecificationInterface
-     * @throws CanNotGroupNullSpecification
-     */
-    public function group();
 }

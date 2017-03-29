@@ -2,7 +2,6 @@
 
 namespace Widi\Filter\Specification;
 
-use Widi\Filter\Specification\Exception\CanNotGroupNullSpecification;
 use Widi\Filter\Specification\Operator\AndNotSpecification;
 use Widi\Filter\Specification\Operator\AndSpecification;
 use Widi\Filter\Specification\Operator\NotSpecification;
@@ -114,18 +113,5 @@ class CompositeSpecification implements CompositeSpecificationInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @return SpecificationInterface
-     * @throws CanNotGroupNullSpecification
-     */
-    public function group()
-    {
-        if ($this->specification === null) {
-            throw new CanNotGroupNullSpecification('No specification defined in composite specification');
-        }
-
-        return $this->specification;
     }
 }
