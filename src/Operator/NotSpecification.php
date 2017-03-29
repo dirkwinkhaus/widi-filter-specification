@@ -19,7 +19,8 @@ class NotSpecification implements SpecificationInterface
     private $specificationA;
 
     /**
-     * AndSpecification constructor.
+     * NotSpecification constructor.
+     *
      * @param SpecificationInterface $specificationA
      */
     public function __construct(

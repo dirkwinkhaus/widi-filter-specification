@@ -24,7 +24,8 @@ class OrSpecification implements SpecificationInterface
     private $specificationB;
 
     /**
-     * AndSpecification constructor.
+     * OrSpecification constructor.
+     *
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
      */

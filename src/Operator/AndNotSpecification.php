@@ -24,7 +24,8 @@ class AndNotSpecification implements SpecificationInterface
     private $specificationB;
 
     /**
-     * AndSpecification constructor.
+     * AndNotSpecification constructor.
+     *
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
      */

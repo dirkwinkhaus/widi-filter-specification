@@ -12,12 +12,18 @@
     "php" : "^7.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.5.5"
+    "phpunit/phpunit": "6"
   },
   "autoload": {
     "psr-4": {
       "Widi\\Filter\\Specification\\": [
-        "src/",
+        "src/"
+      ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Widi\\Filter\\Specification\\": [
         "test/Integration",
         "test/Unit"
       ]

@@ -25,6 +25,7 @@ class AndSpecification implements SpecificationInterface
 
     /**
      * AndSpecification constructor.
+     *
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
      */

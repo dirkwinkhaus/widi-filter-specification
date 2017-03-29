@@ -24,7 +24,8 @@ class XorSpecification implements SpecificationInterface
     private $specificationB;
 
     /**
-     * AndSpecification constructor.
+     * XorSpecification constructor.
+     *
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
      */
