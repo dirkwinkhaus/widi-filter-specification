@@ -32,7 +32,8 @@ class XorSpecification implements SpecificationInterface
     public function __construct(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    ) {
+    )
+    {
         $this->specificationA = $specificationA;
         $this->specificationB = $specificationB;
     }

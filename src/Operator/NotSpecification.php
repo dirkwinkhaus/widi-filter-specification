@@ -25,7 +25,8 @@ class NotSpecification implements SpecificationInterface
      */
     public function __construct(
         SpecificationInterface $specificationA
-    ) {
+    )
+    {
         $this->specificationA = $specificationA;
     }
 

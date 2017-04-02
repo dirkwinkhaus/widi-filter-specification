@@ -6,7 +6,7 @@ use Widi\Filter\Specification\CandidateInterface;
 use Widi\Filter\Specification\SpecificationInterface;
 
 /**
- * Class CandidateIsHigherThanFiveSpecification
+ * Class CandidateIsHigherThanFiveCompositeSpecification
  * @package Widi\Filter\Specification\AdditionalClasses
  *
  * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>

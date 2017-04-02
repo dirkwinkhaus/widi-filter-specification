@@ -5,7 +5,9 @@ namespace Widi\Filter\Specification;
 use PHPUnit\Framework\TestCase;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsDivisableByFive;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanFiveCompositeSpecification;
+use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanOneHundredCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwentyCompositeSpecification;
+use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwoHundredCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\MyCandidateInterface;
 use Widi\Filter\Specification\Factory\CompositeSpecificationFactory;
 
@@ -20,17 +22,50 @@ class SpecificationTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider getData
+     * @dataProvider getDataForOneComposite
      */
-    public function itShouldFilter($value, $expectedResult)
+    public function itShouldFilterByOneComposite($value, $expectedResult)
     {
         $candidate = $this->prophesize(MyCandidateInterface::class);
         $candidate->getValue()->willReturn($value);
 
-        $compositeSpecificationFactory = new CompositeSpecificationFactory(new CandidateIsHigherThanFiveCompositeSpecification());
-        $compositeSpecification = $compositeSpecificationFactory();
-        $compositeSpecification->and(new CandidateIsLowerThanTwentyCompositeSpecification());
-        $compositeSpecification->or(new CandidateIsDivisableByFive());
+        $compositeSpecificationFirstCompositeFactory = new CompositeSpecificationFactory();
+        $compositeSpecificationFirstComposite = $compositeSpecificationFirstCompositeFactory();
+
+        $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
+        $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
+        $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
+
+        $result = $compositeSpecificationFirstComposite->meetsSpecification($candidate->reveal());
+
+        $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
+    }
+
+    /**
+     * @test
+     * @dataProvider getDataForTwoComposites
+     */
+
+    public function itShouldFilterByTwoComposites($value, $expectedResult)
+    {
+        $candidate = $this->prophesize(MyCandidateInterface::class);
+        $candidate->getValue()->willReturn($value);
+
+        $compositeSpecificationFirstCompositeFactory = new CompositeSpecificationFactory();
+        $compositeSpecificationFirstComposite = $compositeSpecificationFirstCompositeFactory();
+
+        $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
+        $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
+        $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
+
+        $compositeSpecificationSecondComposite = $compositeSpecificationFirstCompositeFactory();
+        $compositeSpecificationSecondComposite->and(new CandidateIsHigherThanOneHundredCompositeSpecification());
+        $compositeSpecificationSecondComposite->and(new CandidateIsLowerThanTwoHundredCompositeSpecification());
+
+
+        $compositeSpecification = $compositeSpecificationFirstCompositeFactory();
+        $compositeSpecification->or($compositeSpecificationFirstComposite);
+        $compositeSpecification->or($compositeSpecificationSecondComposite);
 
         $result = $compositeSpecification->meetsSpecification($candidate->reveal());
 
@@ -40,7 +75,7 @@ class SpecificationTest extends TestCase
     /**
      * @return array
      */
-    public function getData()
+    public function getDataForOneComposite()
     {
         return [
             [0, true],
@@ -75,5 +110,27 @@ class SpecificationTest extends TestCase
             [29, false],
             [30, true],
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForTwoComposites()
+    {
+        return array_merge(
+            $this->getDataForOneComposite(),
+            [
+                [101, true],
+                [99, false],
+                [201, false],
+                [98, false],
+                [77, false],
+                [102, true],
+                [188, true],
+                [155, true],
+                [233, false],
+                [500, true],
+            ]
+        );
     }
 }

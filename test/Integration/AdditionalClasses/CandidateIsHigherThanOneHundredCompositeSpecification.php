@@ -7,9 +7,9 @@ use Widi\Filter\Specification\SpecificationInterface;
 
 /**
  * Class CandidateIsHigherThanOneHundredCompositeSpecification
- *
  * @package Widi\Filter\Specification\AdditionalClasses
- * @author  Dirk Winkhaus <dirk.winkhaus@check24.de>
+ *
+ * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
 class CandidateIsHigherThanOneHundredCompositeSpecification implements SpecificationInterface
 {
