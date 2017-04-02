@@ -2,8 +2,6 @@
 
 namespace Widi\Filter\Specification;
 
-use Widi\Filter\Specification\Exception\CanNotGroupNullSpecification;
-
 /**
  * Class AbstractCompositeSpecification
  * @package Widi\Filter\Specification
@@ -24,7 +22,7 @@ interface CompositeSpecificationInterface extends SpecificationInterface
      *
      * @return CompositeSpecificationInterface
      */
-    public function and(SpecificationInterface $specification);
+    public function and (SpecificationInterface $specification);
 
     /**
      * @return CompositeSpecificationInterface
@@ -36,12 +34,12 @@ interface CompositeSpecificationInterface extends SpecificationInterface
      *
      * @return CompositeSpecificationInterface
      */
-    public function or(SpecificationInterface $specification);
+    public function or (SpecificationInterface $specification);
 
     /**
      * @param SpecificationInterface $specification
      *
      * @return CompositeSpecificationInterface
      */
-    public function xor(SpecificationInterface $specification);
+    public function xor (SpecificationInterface $specification);
 }

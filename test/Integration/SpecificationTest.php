@@ -5,10 +5,9 @@ namespace Widi\Filter\Specification;
 use PHPUnit\Framework\TestCase;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsDivisableByFive;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanFiveCompositeSpecification;
-use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanOneHundredCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwentyCompositeSpecification;
-use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwoHundredCompositeSpecification;
-use Widi\Filter\Specification\AdditionalClasses\MySpecification;
+use Widi\Filter\Specification\AdditionalClasses\MyCandidateInterface;
+use Widi\Filter\Specification\Factory\CompositeSpecificationFactory;
 
 /**
  * Class SpecificationTest
@@ -21,46 +20,17 @@ class SpecificationTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider getDataForOneComposite
+     * @dataProvider getData
      */
-    public function itShouldFilterByOneComposite($value, $expectedResult)
+    public function itShouldFilter($value, $expectedResult)
     {
-        $candidate = $this->prophesize(MySpecification::class);
+        $candidate = $this->prophesize(MyCandidateInterface::class);
         $candidate->getValue()->willReturn($value);
 
-        $compositeSpecificationFirstComposite = new CompositeSpecification();
-        $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
-        $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
-        $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
-
-        $result = $compositeSpecificationFirstComposite->meetsSpecification($candidate->reveal());
-
-        $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
-    }
-
-    /**
-     * @test
-     * @dataProvider getDataForTwoComposites
-     */
-
-    public function itShouldFilterByTwoComposites($value, $expectedResult)
-    {
-        $candidate = $this->prophesize(MySpecification::class);
-        $candidate->getValue()->willReturn($value);
-
-        $compositeSpecificationFirstComposite = new CompositeSpecification();
-        $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
-        $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
-        $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
-
-        $compositeSpecificationSecondComposite = new CompositeSpecification();
-        $compositeSpecificationSecondComposite->and(new CandidateIsHigherThanOneHundredCompositeSpecification());
-        $compositeSpecificationSecondComposite->and(new CandidateIsLowerThanTwoHundredCompositeSpecification());
-
-
-        $compositeSpecification = new CompositeSpecification();
-        $compositeSpecification->or($compositeSpecificationFirstComposite);
-        $compositeSpecification->or($compositeSpecificationSecondComposite);
+        $compositeSpecificationFactory = new CompositeSpecificationFactory(new CandidateIsHigherThanFiveCompositeSpecification());
+        $compositeSpecification = $compositeSpecificationFactory();
+        $compositeSpecification->and(new CandidateIsLowerThanTwentyCompositeSpecification());
+        $compositeSpecification->or(new CandidateIsDivisableByFive());
 
         $result = $compositeSpecification->meetsSpecification($candidate->reveal());
 
@@ -70,7 +40,7 @@ class SpecificationTest extends TestCase
     /**
      * @return array
      */
-    public function getDataForOneComposite()
+    public function getData()
     {
         return [
             [0, true],
@@ -105,27 +75,5 @@ class SpecificationTest extends TestCase
             [29, false],
             [30, true],
         ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForTwoComposites()
-    {
-        return array_merge(
-            $this->getDataForOneComposite(),
-            [
-                [101, true],
-                [99, false],
-                [201, false],
-                [98, false],
-                [77, false],
-                [102, true],
-                [188, true],
-                [155, true],
-                [233, false],
-                [500, true],
-            ]
-        );
     }
 }

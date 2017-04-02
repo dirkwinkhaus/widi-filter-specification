@@ -2,8 +2,8 @@
 
 namespace Widi\Filter\Specification\AdditionalClasses;
 
-use Widi\Filter\Specification\CompositeSpecification;
 use Widi\Filter\Specification\CandidateInterface;
+use Widi\Filter\Specification\SpecificationInterface;
 
 /**
  * Class CandidateIsDivisableByFive
@@ -11,7 +11,7 @@ use Widi\Filter\Specification\CandidateInterface;
  *
  * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
-class CandidateIsDivisableByFive extends CompositeSpecification
+class CandidateIsDivisableByFive implements SpecificationInterface
 {
 
     /**
@@ -20,7 +20,7 @@ class CandidateIsDivisableByFive extends CompositeSpecification
      */
     public function meetsSpecification(CandidateInterface $candidate)
     {
-        /** @var MySpecification $candidate */
+        /** @var MyCandidateInterface $candidate */
         return ($candidate->getValue() % 5 === 0);
     }
 }

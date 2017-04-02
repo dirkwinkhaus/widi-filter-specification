@@ -2,12 +2,6 @@
 
 namespace Widi\Filter\Specification;
 
-use Widi\Filter\Specification\Operator\AndNotSpecification;
-use Widi\Filter\Specification\Operator\AndSpecification;
-use Widi\Filter\Specification\Operator\NotSpecification;
-use Widi\Filter\Specification\Operator\OrSpecification;
-use Widi\Filter\Specification\Operator\XorSpecification;
-
 /**
  * Class CompositeSpecification
  * @package Widi\Filter\Specification
@@ -20,15 +14,24 @@ class CompositeSpecification implements CompositeSpecificationInterface
      * @var SpecificationInterface
      */
     private $specification;
+    /**
+     * @var BuilderInterface
+     */
+    private $builder;
 
     /**
      * CompositeSpecification constructor.
-     * 
+     *
+     * @param BuilderInterface $builder
      * @param SpecificationInterface|null $specification
      */
-    public function __construct(SpecificationInterface $specification = null)
+    public function __construct(
+        BuilderInterface $builder,
+        SpecificationInterface $specification = null
+    )
     {
         $this->specification = $specification;
+        $this->builder = $builder;
     }
 
     /**
@@ -51,7 +54,7 @@ class CompositeSpecification implements CompositeSpecificationInterface
         if ($this->specification === null) {
             $this->specification = $specification;
         } else {
-            $this->specification = new AndNotSpecification($this->specification, $specification);
+            $this->specification = $this->builder->createAndNotSpecification($this->specification, $specification);
         }
 
         return $this;
@@ -62,12 +65,12 @@ class CompositeSpecification implements CompositeSpecificationInterface
      *
      * @return CompositeSpecificationInterface
      */
-    public function and(SpecificationInterface $specification)
+    public function and (SpecificationInterface $specification)
     {
         if ($this->specification === null) {
             $this->specification = $specification;
         } else {
-            $this->specification = new AndSpecification($this->specification, $specification);
+            $this->specification = $this->builder->createAndSpecification($this->specification, $specification);
         }
 
         return $this;
@@ -78,7 +81,7 @@ class CompositeSpecification implements CompositeSpecificationInterface
      */
     public function not()
     {
-        $this->specification = new NotSpecification($this->specification);
+        $this->specification = $this->builder->createNotSpecification($this->specification);
 
         return $this;
     }
@@ -88,12 +91,12 @@ class CompositeSpecification implements CompositeSpecificationInterface
      *
      * @return CompositeSpecificationInterface
      */
-    public function or(SpecificationInterface $specification)
+    public function or (SpecificationInterface $specification)
     {
         if ($this->specification === null) {
             $this->specification = $specification;
         } else {
-            $this->specification = new OrSpecification($this->specification, $specification);
+            $this->specification = $this->builder->createOrSpecification($this->specification, $specification);
         }
 
         return $this;
@@ -104,12 +107,12 @@ class CompositeSpecification implements CompositeSpecificationInterface
      *
      * @return CompositeSpecificationInterface
      */
-    public function xor(SpecificationInterface $specification)
+    public function xor (SpecificationInterface $specification)
     {
         if ($this->specification === null) {
             $this->specification = $specification;
         } else {
-            $this->specification = new XorSpecification($this->specification, $specification);
+            $this->specification = $this->builder->createXorSpecification($this->specification, $specification);
         }
 
         return $this;

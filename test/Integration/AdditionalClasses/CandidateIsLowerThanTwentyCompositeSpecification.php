@@ -2,8 +2,8 @@
 
 namespace Widi\Filter\Specification\AdditionalClasses;
 
-use Widi\Filter\Specification\CompositeSpecification;
 use Widi\Filter\Specification\CandidateInterface;
+use Widi\Filter\Specification\SpecificationInterface;
 
 /**
  * Class CandidateIsLowerThanTwentySpecification
@@ -11,7 +11,7 @@ use Widi\Filter\Specification\CandidateInterface;
  *
  * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
-class CandidateIsLowerThanTwentyCompositeSpecification extends CompositeSpecification
+class CandidateIsLowerThanTwentyCompositeSpecification implements SpecificationInterface
 {
 
     /**
@@ -20,7 +20,7 @@ class CandidateIsLowerThanTwentyCompositeSpecification extends CompositeSpecific
      */
     public function meetsSpecification(CandidateInterface $candidate)
     {
-        /** @var MySpecification $candidate */
+        /** @var MyCandidateInterface $candidate */
         return ($candidate->getValue() < 20);
     }
 }

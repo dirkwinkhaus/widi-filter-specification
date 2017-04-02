@@ -2,8 +2,8 @@
 
 namespace Widi\Filter\Specification\AdditionalClasses;
 
-use Widi\Filter\Specification\CompositeSpecification;
 use Widi\Filter\Specification\CandidateInterface;
+use Widi\Filter\Specification\SpecificationInterface;
 
 /**
  * Class CandidateIsHigherThanOneHundredCompositeSpecification
@@ -11,7 +11,7 @@ use Widi\Filter\Specification\CandidateInterface;
  * @package Widi\Filter\Specification\AdditionalClasses
  * @author  Dirk Winkhaus <dirk.winkhaus@check24.de>
  */
-class CandidateIsHigherThanOneHundredCompositeSpecification extends CompositeSpecification
+class CandidateIsHigherThanOneHundredCompositeSpecification implements SpecificationInterface
 {
 
     /**

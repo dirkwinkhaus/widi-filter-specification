@@ -5,12 +5,12 @@ namespace Widi\Filter\Specification\AdditionalClasses;
 use Widi\Filter\Specification\CandidateInterface;
 
 /**
- * Class MySpecification
+ * Interface MyCandidate
  * @package Widi\Filter\Specification\AdditionalClasses
  *
  * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
-interface MySpecification extends CandidateInterface
+interface MyCandidateInterface extends CandidateInterface
 {
     /**
      * @return int
