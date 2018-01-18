@@ -4,20 +4,29 @@
     $candidate = $this->prophesize(MyCandidateInterface::class);
     $candidate->getValue()->willReturn($value);
 
-    $compositeSpecificationFirstCompositeFactory = new CompositeSpecificationFactory();
-    $compositeSpecificationFirstComposite = $compositeSpecificationFirstCompositeFactory();
+    $builderFactory = new BuilderFactory();
 
-    $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
-    $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
-    $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
+    $specificationBuilder = $builderFactory->create();
+    $firstSpecification   =
+        $specificationBuilder
+            ->and(new CandidateIsHigherThanFiveCompositeSpecification())
+            ->and(new CandidateIsLowerThanTwentyCompositeSpecification())
+            ->or(new CandidateIsDivisableByFive())
+            ->build();
 
-    $compositeSpecificationSecondComposite = $compositeSpecificationFirstCompositeFactory();
-    $compositeSpecificationSecondComposite->and(new CandidateIsHigherThanOneHundredCompositeSpecification());
-    $compositeSpecificationSecondComposite->and(new CandidateIsLowerThanTwoHundredCompositeSpecification());
+    $secondSpecification =
+        $specificationBuilder
+            ->and(new CandidateIsHigherThanOneHundredCompositeSpecification())
+            ->and(new CandidateIsLowerThanTwoHundredCompositeSpecification())
+            ->build();
 
-    $compositeSpecification = $compositeSpecificationFirstCompositeFactory();
-    $compositeSpecification->or($compositeSpecificationFirstComposite);
-    $compositeSpecification->or($compositeSpecificationSecondComposite);
+    $compositeSpecification =
+        $specificationBuilder
+            ->or($firstSpecification)
+            ->or($secondSpecification)
+            ->build();
 
     $result = $compositeSpecification->meetsSpecification($candidate->reveal());
+
+    $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
 ```
