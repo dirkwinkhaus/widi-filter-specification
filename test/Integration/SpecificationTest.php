@@ -9,13 +9,14 @@ use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanOneHundredC
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwentyCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwoHundredCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\MyCandidateInterface;
-use Widi\Filter\Specification\Factory\CompositeSpecificationFactory;
+use Widi\Filter\Specification\Factory\BuilderFactory;
 
 /**
  * Class SpecificationTest
+ *
  * @package Widi\Filter\Specification
  *
- * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
+ * @author  Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
 class SpecificationTest extends TestCase
 {
@@ -29,14 +30,17 @@ class SpecificationTest extends TestCase
         $candidate = $this->prophesize(MyCandidateInterface::class);
         $candidate->getValue()->willReturn($value);
 
-        $compositeSpecificationFirstCompositeFactory = new CompositeSpecificationFactory();
-        $compositeSpecificationFirstComposite = $compositeSpecificationFirstCompositeFactory();
+        $builderFactory = new BuilderFactory();
 
-        $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
-        $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
-        $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
+        $specificationBuilder = $builderFactory->create();
+        $specification        =
+            $specificationBuilder
+                ->and(new CandidateIsHigherThanFiveCompositeSpecification())
+                ->and(new CandidateIsLowerThanTwentyCompositeSpecification())
+                ->or(new CandidateIsDivisableByFive())
+                ->build();
 
-        $result = $compositeSpecificationFirstComposite->meetsSpecification($candidate->reveal());
+        $result = $specification->meetsSpecification($candidate->reveal());
 
         $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
     }
@@ -51,21 +55,27 @@ class SpecificationTest extends TestCase
         $candidate = $this->prophesize(MyCandidateInterface::class);
         $candidate->getValue()->willReturn($value);
 
-        $compositeSpecificationFirstCompositeFactory = new CompositeSpecificationFactory();
-        $compositeSpecificationFirstComposite = $compositeSpecificationFirstCompositeFactory();
+        $builderFactory = new BuilderFactory();
 
-        $compositeSpecificationFirstComposite->and(new CandidateIsHigherThanFiveCompositeSpecification());
-        $compositeSpecificationFirstComposite->and(new CandidateIsLowerThanTwentyCompositeSpecification());
-        $compositeSpecificationFirstComposite->or(new CandidateIsDivisableByFive());
+        $specificationBuilder = $builderFactory->create();
+        $firstSpecification   =
+            $specificationBuilder
+                ->and(new CandidateIsHigherThanFiveCompositeSpecification())
+                ->and(new CandidateIsLowerThanTwentyCompositeSpecification())
+                ->or(new CandidateIsDivisableByFive())
+                ->build();
 
-        $compositeSpecificationSecondComposite = $compositeSpecificationFirstCompositeFactory();
-        $compositeSpecificationSecondComposite->and(new CandidateIsHigherThanOneHundredCompositeSpecification());
-        $compositeSpecificationSecondComposite->and(new CandidateIsLowerThanTwoHundredCompositeSpecification());
+        $secondSpecification =
+            $specificationBuilder
+                ->and(new CandidateIsHigherThanOneHundredCompositeSpecification())
+                ->and(new CandidateIsLowerThanTwoHundredCompositeSpecification())
+                ->build();
 
-
-        $compositeSpecification = $compositeSpecificationFirstCompositeFactory();
-        $compositeSpecification->or($compositeSpecificationFirstComposite);
-        $compositeSpecification->or($compositeSpecificationSecondComposite);
+        $compositeSpecification =
+            $specificationBuilder
+                ->or($firstSpecification)
+                ->or($secondSpecification)
+                ->build();
 
         $result = $compositeSpecification->meetsSpecification($candidate->reveal());
 
@@ -78,37 +88,130 @@ class SpecificationTest extends TestCase
     public function getDataForOneComposite()
     {
         return [
-            [0, true],
-            [1, false],
-            [2, false],
-            [3, false],
-            [4, false],
-            [5, true],
-            [6, true],
-            [7, true],
-            [8, true],
-            [9, true],
-            [10, true],
-            [11, true],
-            [12, true],
-            [13, true],
-            [14, true],
-            [15, true],
-            [16, true],
-            [17, true],
-            [18, true],
-            [19, true],
-            [20, true],
-            [21, false],
-            [22, false],
-            [23, false],
-            [24, false],
-            [25, true],
-            [26, false],
-            [27, false],
-            [28, false],
-            [29, false],
-            [30, true],
+            [
+                0,
+                true,
+            ],
+            [
+                1,
+                false,
+            ],
+            [
+                2,
+                false,
+            ],
+            [
+                3,
+                false,
+            ],
+            [
+                4,
+                false,
+            ],
+            [
+                5,
+                true,
+            ],
+            [
+                6,
+                true,
+            ],
+            [
+                7,
+                true,
+            ],
+            [
+                8,
+                true,
+            ],
+            [
+                9,
+                true,
+            ],
+            [
+                10,
+                true,
+            ],
+            [
+                11,
+                true,
+            ],
+            [
+                12,
+                true,
+            ],
+            [
+                13,
+                true,
+            ],
+            [
+                14,
+                true,
+            ],
+            [
+                15,
+                true,
+            ],
+            [
+                16,
+                true,
+            ],
+            [
+                17,
+                true,
+            ],
+            [
+                18,
+                true,
+            ],
+            [
+                19,
+                true,
+            ],
+            [
+                20,
+                true,
+            ],
+            [
+                21,
+                false,
+            ],
+            [
+                22,
+                false,
+            ],
+            [
+                23,
+                false,
+            ],
+            [
+                24,
+                false,
+            ],
+            [
+                25,
+                true,
+            ],
+            [
+                26,
+                false,
+            ],
+            [
+                27,
+                false,
+            ],
+            [
+                28,
+                false,
+            ],
+            [
+                29,
+                false,
+            ],
+            [
+                30,
+                true,
+            ],
         ];
     }
 
@@ -120,16 +223,46 @@ class SpecificationTest extends TestCase
         return array_merge(
             $this->getDataForOneComposite(),
             [
-                [101, true],
-                [99, false],
-                [201, false],
-                [98, false],
-                [77, false],
-                [102, true],
-                [188, true],
-                [155, true],
-                [233, false],
-                [500, true],
+                [
+                    101,
+                    true,
+                ],
+                [
+                    99,
+                    false,
+                ],
+                [
+                    201,
+                    false,
+                ],
+                [
+                    98,
+                    false,
+                ],
+                [
+                    77,
+                    false,
+                ],
+                [
+                    102,
+                    true,
+                ],
+                [
+                    188,
+                    true,
+                ],
+                [
+                    155,
+                    true,
+                ],
+                [
+                    233,
+                    false,
+                ],
+                [
+                    500,
+                    true,
+                ],
             ]
         );
     }

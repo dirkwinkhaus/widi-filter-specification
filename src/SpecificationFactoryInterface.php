@@ -1,18 +1,20 @@
 <?php
 
+namespace Widi\Filter\Specification;
 
-namespace Widi\Filter\Specification\Operator;
-
-use Widi\Filter\Specification\BuilderInterface;
-use Widi\Filter\Specification\SpecificationInterface;
+use Widi\Filter\Specification\Operator\AndNotSpecification;
+use Widi\Filter\Specification\Operator\AndSpecification;
+use Widi\Filter\Specification\Operator\NotSpecification;
+use Widi\Filter\Specification\Operator\OrSpecification;
+use Widi\Filter\Specification\Operator\XorSpecification;
 
 /**
- * Class Builder
+ * interface SpecificationFactoryInterface
  * @package Widi\Filter\Specification\Operator
  *
  * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
-class Builder implements BuilderInterface
+interface SpecificationFactoryInterface
 {
     /**
      * @param SpecificationInterface $specificationA
@@ -22,10 +24,7 @@ class Builder implements BuilderInterface
     public function createAndSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
-    {
-        return new AndSpecification($specificationA, $specificationB);
-    }
+    ): SpecificationInterface;
 
     /**
      * @param SpecificationInterface $specificationA
@@ -35,10 +34,7 @@ class Builder implements BuilderInterface
     public function createOrSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
-    {
-        return new OrSpecification($specificationA, $specificationB);
-    }
+    ): SpecificationInterface;
 
     /**
      * @param SpecificationInterface $specificationA
@@ -48,10 +44,7 @@ class Builder implements BuilderInterface
     public function createXorSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
-    {
-        return new XorSpecification($specificationA, $specificationB);
-    }
+    ): SpecificationInterface;
 
     /**
      * @param SpecificationInterface $specificationA
@@ -61,10 +54,7 @@ class Builder implements BuilderInterface
     public function createAndNotSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
-    {
-        return new AndNotSpecification($specificationA, $specificationB);
-    }
+    );
 
     /**
      * @param SpecificationInterface $specificationA
@@ -72,8 +62,5 @@ class Builder implements BuilderInterface
      */
     public function createNotSpecification(
         SpecificationInterface $specificationA
-    )
-    {
-        return new NotSpecification($specificationA);
-    }
+    );
 }

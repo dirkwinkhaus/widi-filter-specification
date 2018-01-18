@@ -15,5 +15,5 @@ interface SpecificationInterface
      *
      * @return bool
      */
-    public function meetsSpecification(CandidateInterface $candidate);
+    public function meetsSpecification(CandidateInterface $candidate): bool;
 }

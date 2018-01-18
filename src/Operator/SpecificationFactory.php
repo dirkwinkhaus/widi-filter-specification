@@ -1,12 +1,10 @@
 <?php
 
-namespace Widi\Filter\Specification;
 
-use Widi\Filter\Specification\Operator\AndNotSpecification;
-use Widi\Filter\Specification\Operator\AndSpecification;
-use Widi\Filter\Specification\Operator\NotSpecification;
-use Widi\Filter\Specification\Operator\OrSpecification;
-use Widi\Filter\Specification\Operator\XorSpecification;
+namespace Widi\Filter\Specification\Operator;
+
+use Widi\Filter\Specification\SpecificationFactoryInterface;
+use Widi\Filter\Specification\SpecificationInterface;
 
 /**
  * Class Builder
@@ -14,7 +12,7 @@ use Widi\Filter\Specification\Operator\XorSpecification;
  *
  * @author Dirk Winkhaus <dirkwinkhaus@googlemail.com>
  */
-interface BuilderInterface
+class SpecificationFactory implements SpecificationFactoryInterface
 {
     /**
      * @param SpecificationInterface $specificationA
@@ -24,7 +22,10 @@ interface BuilderInterface
     public function createAndSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    );
+    )
+    {
+        return new AndSpecification($specificationA, $specificationB);
+    }
 
     /**
      * @param SpecificationInterface $specificationA
@@ -34,7 +35,10 @@ interface BuilderInterface
     public function createOrSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    );
+    )
+    {
+        return new OrSpecification($specificationA, $specificationB);
+    }
 
     /**
      * @param SpecificationInterface $specificationA
@@ -44,7 +48,10 @@ interface BuilderInterface
     public function createXorSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    );
+    )
+    {
+        return new XorSpecification($specificationA, $specificationB);
+    }
 
     /**
      * @param SpecificationInterface $specificationA
@@ -54,7 +61,10 @@ interface BuilderInterface
     public function createAndNotSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    );
+    )
+    {
+        return new AndNotSpecification($specificationA, $specificationB);
+    }
 
     /**
      * @param SpecificationInterface $specificationA
@@ -62,5 +72,8 @@ interface BuilderInterface
      */
     public function createNotSpecification(
         SpecificationInterface $specificationA
-    );
+    )
+    {
+        return new NotSpecification($specificationA);
+    }
 }
