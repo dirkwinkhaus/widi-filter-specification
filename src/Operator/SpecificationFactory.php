@@ -17,12 +17,13 @@ class SpecificationFactory implements SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return AndSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createAndSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
+    ): SpecificationInterface
     {
         return new AndSpecification($specificationA, $specificationB);
     }
@@ -30,12 +31,13 @@ class SpecificationFactory implements SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return OrSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createOrSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
+    ): SpecificationInterface
     {
         return new OrSpecification($specificationA, $specificationB);
     }
@@ -43,12 +45,13 @@ class SpecificationFactory implements SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return XorSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createXorSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
+    ): SpecificationInterface
     {
         return new XorSpecification($specificationA, $specificationB);
     }
@@ -56,23 +59,25 @@ class SpecificationFactory implements SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return AndNotSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createAndNotSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    )
+    ): SpecificationInterface
     {
         return new AndNotSpecification($specificationA, $specificationB);
     }
 
     /**
      * @param SpecificationInterface $specificationA
-     * @return NotSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createNotSpecification(
         SpecificationInterface $specificationA
-    )
+    ): SpecificationInterface
     {
         return new NotSpecification($specificationA);
     }

@@ -42,10 +42,10 @@ class AndSpecification implements SpecificationInterface
      * @param CandidateInterface $candidate
      * @return bool
      */
-    public function meetsSpecification(CandidateInterface $candidate)
+    public function meetsSpecification(CandidateInterface $candidate): bool
     {
         return
             $this->specificationA->meetsSpecification($candidate) === true
-            and $this->specificationB->meetsSpecification($candidate) === true;
+            && $this->specificationB->meetsSpecification($candidate) === true;
     }
 }

@@ -34,7 +34,7 @@ class NotSpecification implements SpecificationInterface
      * @param CandidateInterface $candidate
      * @return bool
      */
-    public function meetsSpecification(CandidateInterface $candidate)
+    public function meetsSpecification(CandidateInterface $candidate): bool
     {
         return !$this->specificationA->meetsSpecification($candidate);
     }

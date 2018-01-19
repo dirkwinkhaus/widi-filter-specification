@@ -18,7 +18,7 @@ class CandidateIsDivisableByFive implements SpecificationInterface
      * @param CandidateInterface $candidate
      * @return bool
      */
-    public function meetsSpecification(CandidateInterface $candidate)
+    public function meetsSpecification(CandidateInterface $candidate): bool
     {
         /** @var MyCandidateInterface $candidate */
         return ($candidate->getValue() % 5 === 0);

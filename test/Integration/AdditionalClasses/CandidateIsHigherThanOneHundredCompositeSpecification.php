@@ -18,9 +18,9 @@ class CandidateIsHigherThanOneHundredCompositeSpecification implements Specifica
      * @param CandidateInterface $candidate
      * @return bool
      */
-    public function meetsSpecification(CandidateInterface $candidate)
+    public function meetsSpecification(CandidateInterface $candidate): bool
     {
-        /** @var MySpecification $candidate */
+        /** @var MyCandidateInterface $candidate */
         return ($candidate->getValue() > 100);
     }
 }

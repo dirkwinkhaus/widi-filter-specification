@@ -19,7 +19,8 @@ interface SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return AndSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createAndSpecification(
         SpecificationInterface $specificationA,
@@ -29,7 +30,8 @@ interface SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return OrSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createOrSpecification(
         SpecificationInterface $specificationA,
@@ -39,7 +41,8 @@ interface SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return XorSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createXorSpecification(
         SpecificationInterface $specificationA,
@@ -49,18 +52,20 @@ interface SpecificationFactoryInterface
     /**
      * @param SpecificationInterface $specificationA
      * @param SpecificationInterface $specificationB
-     * @return AndNotSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createAndNotSpecification(
         SpecificationInterface $specificationA,
         SpecificationInterface $specificationB
-    );
+    ): SpecificationInterface;
 
     /**
      * @param SpecificationInterface $specificationA
-     * @return NotSpecification
+     *
+     * @return SpecificationInterface
      */
     public function createNotSpecification(
         SpecificationInterface $specificationA
-    );
+    ): SpecificationInterface;
 }
