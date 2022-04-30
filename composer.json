@@ -9,10 +9,8 @@
   ],
   "license": "LGPL-3.0-only",
   "require": {
-    "php" : "^7.1"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "6"
+    "php": "^8.1",
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
@@ -28,5 +26,8 @@
         "test/Unit"
       ]
     }
+  },
+  "scripts": {
+    "check-compat": "for VERSION in 7.4 8.0 8.1;do ./vendor/bin/phpcs -- --colors --report=csv --report-file=data/core-compat-$VERSION.csv -p --extensions=php,phtml . --ignore=api,vendor,data --standard=PHPCompatibility --runtime-set installed_paths vendor/phpcompatibility/php-compatibility/PHPCompatibility --runtime-set testVersion $VERSION ; done"
   }
 }
