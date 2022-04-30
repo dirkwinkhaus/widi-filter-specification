@@ -10,10 +10,5 @@ namespace Widi\Filter\Specification;
  */
 interface SpecificationInterface
 {
-    /**
-     * @param CandidateInterface $candidate
-     *
-     * @return bool
-     */
     public function meetsSpecification(CandidateInterface $candidate): bool;
 }
