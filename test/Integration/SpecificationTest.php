@@ -3,7 +3,9 @@
 namespace Widi\Filter\Specification;
 
 use PHPUnit\Framework\TestCase;
-use Widi\Filter\Specification\AdditionalClasses\CandidateIsDivisableByFive;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
+use Widi\Filter\Specification\AdditionalClasses\CandidateIsDividableByFive;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanFiveCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsHigherThanOneHundredCompositeSpecification;
 use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwentyCompositeSpecification;
@@ -11,24 +13,18 @@ use Widi\Filter\Specification\AdditionalClasses\CandidateIsLowerThanTwoHundredCo
 use Widi\Filter\Specification\AdditionalClasses\MyCandidateInterface;
 use Widi\Filter\Specification\Factory\BuilderFactory;
 
-/**
- * Class SpecificationTest
- *
- * @package Widi\Filter\Specification
- *
- * @author  Dirk Winkhaus <dirkwinkhaus@googlemail.com>
- */
 class SpecificationTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      *
      * @dataProvider getDataForOneComposite
      */
-    public function itShouldFilterByOneComposite($value, $expectedResult)
+    public function itShouldFilterByOneComposite(int $value, bool $expectedResult): void
     {
-        $candidate = $this->prophesize(MyCandidateInterface::class);
-        $candidate->getValue()->willReturn($value);
+        $candidate = $this->createCandidate($value);
 
         $builderFactory = new BuilderFactory();
 
@@ -37,12 +33,14 @@ class SpecificationTest extends TestCase
             $specificationBuilder
                 ->and(new CandidateIsHigherThanFiveCompositeSpecification())
                 ->and(new CandidateIsLowerThanTwentyCompositeSpecification())
-                ->or(new CandidateIsDivisableByFive())
+                ->or(new CandidateIsDividableByFive())
                 ->build();
 
-        $result = $specification->meetsSpecification($candidate->reveal());
+        self::assertInstanceOf(SpecificationInterface::class, $specification);
 
-        $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
+        $result = $specification->meetsSpecification($candidate);
+
+        self::assertEquals($expectedResult, $result, 'Value failed: ' . $value);
     }
 
     /**
@@ -50,10 +48,9 @@ class SpecificationTest extends TestCase
      * @dataProvider getDataForTwoComposites
      */
 
-    public function itShouldFilterByTwoComposites($value, $expectedResult)
+    public function itShouldFilterByTwoComposites(int $value, bool $expectedResult): void
     {
-        $candidate = $this->prophesize(MyCandidateInterface::class);
-        $candidate->getValue()->willReturn($value);
+        $candidate = $this->createCandidate($value);
 
         $builderFactory = new BuilderFactory();
 
@@ -62,8 +59,10 @@ class SpecificationTest extends TestCase
             $specificationBuilder
                 ->and(new CandidateIsHigherThanFiveCompositeSpecification())
                 ->and(new CandidateIsLowerThanTwentyCompositeSpecification())
-                ->or(new CandidateIsDivisableByFive())
+                ->or(new CandidateIsDividableByFive())
                 ->build();
+
+        self::assertInstanceOf(SpecificationInterface::class, $firstSpecification);
 
         $secondSpecification =
             $specificationBuilder
@@ -71,21 +70,25 @@ class SpecificationTest extends TestCase
                 ->and(new CandidateIsLowerThanTwoHundredCompositeSpecification())
                 ->build();
 
+        self::assertInstanceOf(SpecificationInterface::class, $secondSpecification);
+
         $compositeSpecification =
             $specificationBuilder
                 ->or($firstSpecification)
                 ->or($secondSpecification)
                 ->build();
 
-        $result = $compositeSpecification->meetsSpecification($candidate->reveal());
+        self::assertInstanceOf(SpecificationInterface::class, $compositeSpecification);
 
-        $this->assertEquals($expectedResult, $result, 'Value failed: ' . $value);
+        $result = $compositeSpecification->meetsSpecification($candidate);
+
+        self::assertEquals($expectedResult, $result, 'Value failed: ' . $value);
     }
 
     /**
-     * @return array
+     * @return array<array<int, int|bool>>
      */
-    public function getDataForOneComposite()
+    public function getDataForOneComposite(): array
     {
         return [
             [
@@ -216,9 +219,9 @@ class SpecificationTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<array<int, int|bool>>
      */
-    public function getDataForTwoComposites()
+    public function getDataForTwoComposites(): array
     {
         return array_merge(
             $this->getDataForOneComposite(),
@@ -265,5 +268,20 @@ class SpecificationTest extends TestCase
                 ],
             ]
         );
+    }
+
+    private function createCandidate(int $value): MyCandidateInterface
+    {
+        return new class ($value) implements MyCandidateInterface {
+            public function __construct(private int $value)
+            {
+
+            }
+
+            public function getValue(): int
+            {
+                return $this->value;
+            }
+        };
     }
 }

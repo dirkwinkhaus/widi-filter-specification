@@ -15,7 +15,7 @@ class CompositeSpecificationTest extends TestCase
     /**
      * @test
      */
-    public function itShouldBeTested()
+    public function itShouldBeTested(): void
     {
         $this->markTestIncomplete('Unit tests missing');
     }

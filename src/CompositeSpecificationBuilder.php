@@ -2,24 +2,12 @@
 
 namespace Widi\Filter\Specification;
 
-/**
- * Class CompositeSpecification
- *
- * @package Widi\Filter\Specification
- *
- * @author  Dirk Winkhaus <dirkwinkhaus@googlemail.com>
- */
-class CompositeSpecificationBuilder implements CompositeSpecificationBuilderInterface
+final class CompositeSpecificationBuilder implements CompositeSpecificationBuilderInterface
 {
-    private ?SpecificationInterface $specification;
-    private SpecificationFactoryInterface $specificationFactory;
-
     public function __construct(
-        SpecificationFactoryInterface $builder,
-        SpecificationInterface $specification = null
+        private readonly SpecificationFactoryInterface $specificationFactory,
+        private ?SpecificationInterface $specification = null
     ) {
-        $this->specification        = $specification;
-        $this->specificationFactory = $builder;
     }
 
     public function andNot(SpecificationInterface $specification): CompositeSpecificationBuilderInterface
@@ -33,7 +21,7 @@ class CompositeSpecificationBuilder implements CompositeSpecificationBuilderInte
         return $this;
     }
 
-    public function and (SpecificationInterface $specification): CompositeSpecificationBuilderInterface
+    public function and(SpecificationInterface $specification): CompositeSpecificationBuilderInterface
     {
         if ($this->specification === null) {
             $this->specification = $specification;
@@ -46,12 +34,16 @@ class CompositeSpecificationBuilder implements CompositeSpecificationBuilderInte
 
     public function not(): CompositeSpecificationBuilderInterface
     {
+        if ($this->specification === null) {
+            return $this;
+        }
+
         $this->specification = $this->specificationFactory->createNotSpecification($this->specification);
 
         return $this;
     }
 
-    public function or (SpecificationInterface $specification): CompositeSpecificationBuilderInterface
+    public function or(SpecificationInterface $specification): CompositeSpecificationBuilderInterface
     {
         if ($this->specification === null) {
             $this->specification = $specification;
@@ -62,12 +54,7 @@ class CompositeSpecificationBuilder implements CompositeSpecificationBuilderInte
         return $this;
     }
 
-    /**
-     * @param SpecificationInterface $specification
-     *
-     * @return CompositeSpecificationBuilderInterface
-     */
-    public function xor (SpecificationInterface $specification): CompositeSpecificationBuilderInterface
+    public function xor(SpecificationInterface $specification): CompositeSpecificationBuilderInterface
     {
         if ($this->specification === null) {
             $this->specification = $specification;
@@ -80,6 +67,10 @@ class CompositeSpecificationBuilder implements CompositeSpecificationBuilderInte
 
     public function build(): ?SpecificationInterface
     {
+        if ($this->specification === null) {
+            return null;
+        }
+
         $specification       = clone $this->specification;
         $this->specification = null;
 
